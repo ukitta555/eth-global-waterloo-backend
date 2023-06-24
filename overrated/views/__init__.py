@@ -1,0 +1,1 @@
+from .test_auth_view import TestAuthView
