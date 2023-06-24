@@ -39,14 +39,24 @@ class RegisterSerializer(serializers.Serializer):
             msg = '"public_key" should have length 42.'
             raise serializers.ValidationError(msg, code=400)
         if email and password and public_key:
-            # Try to authenticate the user using Django auth framework.
-            user = MyUser.objects.create(
-                email=email,
-                password=make_password(password),
-                public_key=public_key,
-                date_of_birth=datetime.date(year=2000, month=1, day=1)
-
+            maybe_user = MyUser.objects.filter(
+                email=email
             )
+            if maybe_user.exists():
+                maybe_user.update(
+                    password=make_password(password),
+                    public_key=public_key,
+                    date_of_birth=datetime.date(year=2000, month=1, day=1)
+                )
+                user = maybe_user[0]
+                # TODO: add reputation in smart contract considering time difference
+            else:
+                user = MyUser.objects.create(
+                    email=email,
+                    password=make_password(password),
+                    public_key=public_key,
+                    date_of_birth=datetime.date(year=2000, month=1, day=1)
+                )
         else:
             msg = '"username","password" and "public_key" are required.'
             raise serializers.ValidationError(msg, code=400)

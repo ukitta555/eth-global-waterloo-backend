@@ -61,13 +61,6 @@ class MyUser(AbstractBaseUser):
         )
     )
     public_key = models.TextField()
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check=Q(public_key__length__gte=42, public_key__length__lte=42),
-                name="public_key_length",
-            )
-        ]
 
     objects = MyUserManager()
 

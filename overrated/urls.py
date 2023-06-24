@@ -19,6 +19,7 @@ from django.urls import path
 from overrated.views.login import LoginView
 from overrated.views.logout import LogoutView
 from overrated.views.register import RegisterView
+from overrated.views.register_phantom_account import RegisterPhantomView
 from overrated.views.test_auth_view import TestAuthView
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
     path('test/', TestAuthView.as_view(), name="test"),
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
-    path('register/', RegisterView.as_view(), name="register")
+    path('register/', RegisterView.as_view(), name="register"),
+    path('register-phantom/', RegisterPhantomView.as_view(), name="phantom_register")
 ]
