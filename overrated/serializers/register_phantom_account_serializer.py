@@ -59,7 +59,7 @@ class RegisterPhantomSerializer(serializers.Serializer):
             yag = yagmail.SMTP('vladyslav.nekriach', os.environ.get("YAGMAIL_SECRET"))
             contents = [
                 f"Hey, it is time to game! Your friend has sent you {additional_reputation} rep in OverRated. Join him "
-                f"at http://127.0.0.1:8000!"
+                f"at http://127.0.0.1:8000/register!"
             ]
             subject = 'Rate Raid: your friend invited you to OverRated!'
             yag.send('nekriach_vv@knu.ua', subject, contents)
