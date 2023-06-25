@@ -7,7 +7,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from overrated.serializers.register_phantom_account import RegisterPhantomSerializer
+from overrated.serializers.register_phantom_account_serializer import RegisterPhantomSerializer
 
 dotenv_path = os.path.join('/home/vladyslav/PycharmProjects/eth_waterloo_backend/eth_waterloo_backend/.env')
 load_dotenv(dotenv_path)
