@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path
 
 from overrated.views.email_test import EmailTestView
+from overrated.views.get_text_messages_viewset import TextMessageViewSet
 from overrated.views.login import LoginView
 from overrated.views.logout import LogoutView
 from overrated.views.register import RegisterView
 from overrated.views.register_phantom_account import RegisterPhantomView
+from overrated.views.send_text_message import SendTextMessage
 from overrated.views.test_auth_view import TestAuthView
 
 urlpatterns = [
@@ -32,4 +34,6 @@ urlpatterns = [
     path('register-phantom/', RegisterPhantomView.as_view(), name="phantom_register"),
     path('email-test/', EmailTestView.as_view(), name="email_test"),
     path('test/', TestAuthView.as_view(), name="test"),
+    path('send-message/', SendTextMessage.as_view(), name="send_message_to_person"),
+    path('view-messages/', TextMessageViewSet.as_view(), name="get_messages"),
 ]

@@ -4,10 +4,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from overrated.serializers.send_text_message_and_plus_rep_serializer import SendTextMessageAndPlusRepSerializer
+from overrated.serializers.send_text_message_serializer import SendTextMessageSerializer
 
 
-class SendTextMessageAndPlusRep(APIView):
+class SendTextMessage(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -19,4 +19,4 @@ class SendTextMessageAndPlusRep(APIView):
             }
         )
         serializer.is_valid(raise_exception=True)
-        return Response("OK", status=status.HTTP_201_CREATED)
+        return Response(f"Message f{serializer.validated_data} sent", status=status.HTTP_201_CREATED)

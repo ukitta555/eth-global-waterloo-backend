@@ -88,6 +88,29 @@ class RegisterSerializer(serializers.Serializer):
                     public_key=public_key,
                     date_of_birth=datetime.date(year=2000, month=1, day=1)
                 )
+
+                print("Starting to send a tx for registering phantom account...")
+                nonce = w3.eth.get_transaction_count(DEPLOYER_ADDRESS)
+                user_creation_txn = reputation_contract.functions.mintUser(
+                    Address(public_key),
+                    200,
+                    0
+                ).build_transaction({
+                    'chainId': SEPOLIA_NETWORK_ID,
+                    'gas': 300000,
+                    'maxFeePerGas': w3.to_wei('30', 'gwei'),
+                    'maxPriorityFeePerGas': w3.to_wei('15', 'gwei'),
+                    'nonce': nonce,
+                })
+                private_key: str = os.environ.get("DEPLOYER_PRIVATE_KEY")
+                signed_txn = w3.eth.account.sign_transaction(
+                    user_creation_txn,
+                    private_key=private_key
+                )
+                print(f"Signed txn for referring a friend: {str(signed_txn.hash)}")
+                w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+                print("Sent tx!")
+
         else:
             msg = '"username","password" and "public_key" are required.'
             raise serializers.ValidationError(msg, code=400)
