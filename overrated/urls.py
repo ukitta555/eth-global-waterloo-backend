@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
+from overrated.views.email_test import EmailTestView
 from overrated.views.login import LoginView
 from overrated.views.logout import LogoutView
 from overrated.views.register import RegisterView
@@ -24,9 +26,10 @@ from overrated.views.test_auth_view import TestAuthView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', TestAuthView.as_view(), name="test"),
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('register/', RegisterView.as_view(), name="register"),
-    path('register-phantom/', RegisterPhantomView.as_view(), name="phantom_register")
+    path('register-phantom/', RegisterPhantomView.as_view(), name="phantom_register"),
+    path('email-test/', EmailTestView.as_view(), name="email_test"),
+    path('test/', TestAuthView.as_view(), name="test"),
 ]

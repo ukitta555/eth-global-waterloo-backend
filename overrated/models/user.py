@@ -6,6 +6,8 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db.models import Q
 from django.db.models.functions import Length
 
+from overrated.consts import SECONDS_IN_A_WEEK, SECONDS_IN_4_BLOCKS
+
 models.TextField.register_lookup(Length)
 class MyUserManager(BaseUserManager):
     def create_user(self, email, date_of_birth, password=None):
@@ -58,6 +60,7 @@ class MyUser(AbstractBaseUser):
             hour=12,
             minute=0,
             second=0,
+            tzinfo=datetime.timezone.utc
         )
     )
     public_key = models.TextField()
@@ -69,6 +72,14 @@ class MyUser(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
+    def reputation_before_removing_phantom(self):
+        print("Calculating reputation with exp. decay...")
+        time_diff: datetime.timedelta = datetime.datetime.now(tz=datetime.timezone.utc) - self.last_reputation_bump_for_phantom_account
+        number_of_4_block_periods_passed: float = time_diff.total_seconds() / SECONDS_IN_4_BLOCKS
+        print(f"Reputation after decay: "
+              f"{int(self.additional_reputation_for_phantom_account * 2**(-number_of_4_block_periods_passed))}")
+        return int(self.additional_reputation_for_phantom_account * 2**(-number_of_4_block_periods_passed))
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
